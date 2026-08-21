@@ -36,4 +36,4 @@ Creative Commons Attribution 4.0 International (CC BY 4.0).
 
 ## Citation
 
-Please cite this dataset as: Shang, X., et al. (2026). Data repository for "A Universal Explicit Model for Double-Layer Repulsion between Clay Particles in Discrete Element Simulations" [Data set]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+Please cite this dataset as: Shang, X., et al. (2026). Data repository for "A Universal Explicit Model for Double-Layer Repulsion between Clay Particles in Discrete Element Simulations" [Data set]. GitHub. https://github.com/ssQin03/clay-dlv-repository
