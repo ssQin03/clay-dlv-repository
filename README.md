@@ -28,6 +28,13 @@ This repository contains the datasets, source code, and trained neural network m
 2. Retrain the mid-plane potential NN: `python nn_unified_model_final.py` (test-set metrics are written to `models/metrics_midplane.json`).
 3. Retrain the energy NN: `python nn_energy_model.py` (test-set metrics are written to `models/metrics_energy.json`).
 
+- `origin/` -- Origin project files used to generate the manuscript figures
+  - `画图.opju`, `NN画图.opju`, `画图对比图.opju` -- Origin 2021+ project files (figure data analysis)
+- `nn_figure_data/` -- CSV datasets and plotting scripts behind the NN figures
+  - `fig14_CC.csv`, `fig14_CP.csv` (and long versions), `fig17_E_CC.csv`, `fig17_E_CP.csv` (and sigma/psi variants), `MATLAB_CP/CC_potential.csv`, `MATLAB_CP/CC_energy.csv`
+  - `Origin复现Fig14步骤.txt` -- step-by-step reproduction notes in Origin
+  - `plot_all_in_origin.py` -- plotting script for the NN figures
+- `figures/` -- Exported figure files (PNG/TIFF/PDF) corresponding to the manuscript figures
 The explicit fitting formulas with the piecewise coefficients are given in Appendices I-IV of the manuscript.
 
 ## License

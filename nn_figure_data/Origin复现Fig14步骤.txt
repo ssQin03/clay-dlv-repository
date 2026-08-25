@@ -1,0 +1,146 @@
+Origin 复现 Fig. 14 详细步骤
+==============================
+数据位置: E:\小论文\拟合公式\NN画图数据\
+数据文件: fig14_CP.csv (CP子图), fig14_CC.csv (CC子图)
+每文件: D列 + NN曲线5条 + PBE曲线5条 = 11列, 500行
+
+Step 1: 导入数据
+  1. File > Import > Single ASCII -> 选中 fig14_CP.csv, 打开
+  2. 同理导入 fig14_CC.csv (自动新建 Sheet2)
+  3. 选中 Col(A), 右键 Set As > X, 将 D 设为 X 轴
+
+Step 2: 绘制 CP 子图
+  1. 选中 CP 工作表所有列 (Col(A)~Col(K))
+  2. Plot > Line > Line -> 生成含10条线的图
+  3. 双击任意曲线打开 Plot Details
+  4. 左侧 Shift 批量选中所有 PBE 曲线 (Col(G)~Col(K)):
+     - Style: Dash, Width: 1.2
+  5. 再选中所有 NN 曲线 (Col(B)~Col(F)):
+     - Style: Solid, Width: 2.5
+  6. 配色: 同参数的 NN 和 PBE 用同色
+     - Col(B)蓝 <-> Col(G)蓝, Col(C)橙 <-> Col(H)橙
+     - Col(D)绿 <-> Col(I)绿, Col(E)红 <-> Col(J)红
+     - Col(F)紫 <-> Col(K)紫
+
+Step 3: 格式化 CP 子图
+  1. X轴: From=0, To=10, Linear
+  2. Y轴: From=0.001, To=12, Type=Log10 (关键!)
+  3. X轴标题: D, 字体Times New Roman, Size 14
+  4. Y轴标题: u, 字体Times New Roman, Size 14
+  5. 图例 (右下角):
+     psi_0=0.05V (z=1.93)
+     psi_0=0.10V (z=3.87)
+     psi_0=0.15V (z=5.80)
+     psi_0=0.20V (z=7.74)
+     psi_0=0.25V (z=9.66)
+     Neural Network (NN)             <- 实线标注
+     Numerical PBE solution          <- 虚线标注
+
+Step 4: 绘制 CC 子图 (在 Sheet2 上重复 Step 2~3)
+  图例文本:
+     sigma=0.05 C/m^2 (p=0.266)
+     sigma=0.10 C/m^2 (p=0.532)
+     sigma=0.15 C/m^2 (p=0.799)
+     sigma=0.20 C/m^2 (p=1.065)
+     sigma=0.25 C/m^2 (p=1.331)
+
+Step 5: 合并双子图
+  方案A (推荐):
+  1. 分别做好 CP 图和 CC 图 (两个独立窗口)
+  2. Tools > Graph Grid, 设 1行2列
+  3. CP 拖入左格, CC 拖入右格
+  方案B:
+  1. Format > Layer Management > Add
+  2. 选 Linked Right Y, 勾选 Link Axes
+
+Step 6: 最终格式
+  - (a) 标签: "(a) Constant Potential (CP)", 加粗, Size 14
+  - (b) 标签: "(b) Constant Charge (CC)", 加粗, Size 14
+  - 网格: 浅灰虚线
+  - 图尺寸: 宽14cm x 高5.5cm
+
+Step 7: 导出
+  File > Export Graphs > Open Image...
+  Type: TIFF (期刊) 或 PNG
+  DPI: 600 (至少300)
+  Color: 24-bit RGB
+
+
+======================================================================
+Fig. 17 - Energy NN (E vs D)
+======================================================================
+数据文件:
+  fig17_E_CP.csv          - CP: D + NN_E(6条) + PBE_E(6条) = 13列
+                          z=[0.5,1,2,4,7,11] (能量NN代码原始值)
+  fig17_E_CC.csv          - CC: D + NN_E(6条) + PBE_E(6条) = 13列
+                          p=[1,5,20,100,500,3000]
+  fig17_E_CP_psi.csv      - CP: D + NN_E + Num_E 对齐 psi=0.05-0.25V
+                          z=1.93,3.87,5.80,7.74,9.67 (5条, 11列)
+  fig17_E_CC_sigma.csv    - CC: D + NN_E + Num_E 对齐 sigma=0.05-0.25C/m^2
+                          p对应σ=0.05-0.25 (5条, 11列)
+
+绘图步骤: 同 Fig. 14 (以上 Step 1~7)，替换导入文件即可
+
+区别:
+  - Y轴标题改为 "E (dimensionless energy)"
+  - Y轴范围: CP用Log10; CC用Log10 (E跨多个数量级)
+  - 图例文本相应改为能量NN对应的z/p值或sigma标注
+
+
+======================================================================
+MATLAB 拟合公式对比数据 (CP - energy_compare_fitted_cp.m)
+======================================================================
+数据文件:
+  MATLAB_CP_energy.csv    - D + (Num, Old, New) x 5个z值 = 16列
+                           z=1.93,3.87,5.80,7.74,9.67
+  MATLAB_CP_potential.csv - D + (Num, Old, New) x 5个z值 = 16列
+                           z同上, u对比
+
+绘图步骤 (以 energy 为例):
+  1. 导入 MATLAB_CP_energy.csv
+  2. Col(A) 设为 X
+  3. 选中Col(B)~Col(P) - Plot > Line > Line
+  4. 配色: 每组的三个曲线同色 (Num/实线, Old/虚线, New/点划线)
+     例如:
+       z=1.93组: Col(B)Num蓝实线, Col(C)Old蓝虚线, Col(D)New蓝点划线
+       z=3.87组: Col(E)Num橙实线, Col(F)Old橙虚线, Col(G)New橙点划线
+       ...
+  5. 线型:
+       Numerical (PBE): Solid, Width 1.5
+       Old fit: Dash, Width 1.2
+       New fit: Dash-Dot, Width 1.5
+  6. Y轴 Log10, X轴 Linear
+  7. 每条z可做独立子图 (如MATLAB原代码6张tile), 或用 Layer Management 拼图
+
+
+======================================================================
+MATLAB 拟合公式对比数据 (CC - energy_compare_fitted.m)
+======================================================================
+数据文件:
+  MATLAB_CC_energy.csv    - D + (Num, Old, New) x 5个sigma = 16列
+                           sigma=0.05,0.10,0.15,0.20,0.25 C/m^2
+  MATLAB_CC_potential.csv - D + (Num, Old, New) x 5个sigma = 16列
+                           sigma同上, u对比
+
+绘图步骤: 同 CP MATLAB 数据
+
+对CC特殊处理:
+  - sigma→p转换: p = 2*asinh(sigma/sigma0), sigma0=0.0119
+  - 5个sigma对应 p=4.29,5.65,6.46,7.03,7.48
+  - 图例标注物理值 sigma (如 "sigma=0.05 C/m^2")
+
+
+======================================================================
+全部文件清单
+======================================================================
+  文件名                          行数  列数  说明
+  fig14_CP.csv                    501   11    Fig.14 CP u对比 (NN vs PBE)
+  fig14_CC.csv                    501   11    Fig.14 CC u对比 (NN vs PBE)
+  fig17_E_CP.csv                  501   13    Fig.17 CP E对比 (NN vs PBE)
+  fig17_E_CC.csv                  501   13    Fig.17 CC E对比 (NN vs PBE)
+  fig17_E_CP_psi.csv              501   11    Fig.17 CP E, 对齐psi物理值
+  fig17_E_CC_sigma.csv            501   11    Fig.17 CC E, 对齐sigma物理值
+  MATLAB_CP_energy.csv            501   16    CP能量: Num vs Old vs New
+  MATLAB_CP_potential.csv         501   16    CP电势: Num vs Old vs New
+  MATLAB_CC_energy.csv            501   16    CC能量: Num vs Old vs New
+  MATLAB_CC_potential.csv         501   16    CC电势: Num vs Old vs New
